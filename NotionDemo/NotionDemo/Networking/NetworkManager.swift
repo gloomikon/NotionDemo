@@ -19,7 +19,10 @@ class NetworkManager {
     func request<R: Request, T: Decodable>(_ request: R) async throws -> T {
         let id = UUID()
         let request = try makeRequest(for: request)
-        NetworkLogger.app.log(request, withID: id)
+
+        if !request.url!.absoluteString.contains("notion") {
+            NetworkLogger.app.log(request, withID: id)
+        }
 
         let responseData: Data
 
