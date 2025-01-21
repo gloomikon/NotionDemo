@@ -42,6 +42,31 @@ struct DebugView: View {
                     Button("🌐 Network logs") {
                         path.append(Path.networkLogs)
                     }
+
+                    Button("🐞 Create bug") {
+                        createBug {
+                            BugSection("General Info") {
+                                Row(title: "Device", description: UIDevice.current.modelName)
+                                Row(title: "iOS", description: UIDevice.current.systemVersion)
+                                Row(title: "App version", description: Bundle.main.appVersion)
+                                Row(title: "Build number", description: Bundle.main.buildVersion)
+                            }
+
+                            Comment(
+                                "Analytics Logs",
+                                logs: SimpleLogger.app.logs
+                                    .map(\.text)
+                                    .joined(separator: "\n***********\n")
+                            )
+
+                            Comment(
+                                "Network Logs",
+                                logs: NetworkLogger.app.logs
+                                    .map(\.debugDescription)
+                                    .joined(separator: "\n***********\n")
+                            )
+                        }
+                    }
                 }
 
                 Section("Info") {
